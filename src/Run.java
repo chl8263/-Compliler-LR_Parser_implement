@@ -5,6 +5,10 @@ import java.util.Scanner;
 
 public class Run {
 
+    private int currentState=0;
+
+    ArrayList<OutPut> outPuts = new ArrayList<>();
+
     private ArrayList<String> input = new ArrayList<String>();
 
     private MyStack inputStack = new MyStack();
@@ -126,6 +130,9 @@ public class Run {
 
             mainStack.printStack();
             inputStack.printStack();
+
+            outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"Shift "+as.getNumber()," "));
+            currentState++;
         } else if (as.getName().equals("r")) {
             reduceGrammer(as.getNumber());
 
@@ -133,10 +140,22 @@ public class Run {
             mainStack.push(as.getNumber());
             mainStack.printStack();
             inputStack.printStack();
+
+            outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"GOTO "+as.getNumber()," "));
+            currentState++;
+
         } else if (as.getName().equals("acc")) {
             System.out.println("$$$$$$$$$$$$$$$$");
             System.out.println("accept!!");
+
+            outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"Accept!!!"," "));
+
+
+            acceptPrint();
+
             System.exit(0);
+
+
         }
     }
 
@@ -158,6 +177,9 @@ public class Run {
                 mainStack.printStack();
                 inputStack.printStack();
 
+                outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"Reduce 1","1"));
+                currentState++;
+
                 break;
             case 2:
                 int num2 = mainStack.searchNumber("T");
@@ -167,6 +189,10 @@ public class Run {
                 mainStack.push("E");
                 mainStack.printStack();
                 inputStack.printStack();
+
+                outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"Reduce 2","2"));
+                currentState++;
+
                 break;
             case 3:
 
@@ -186,6 +212,8 @@ public class Run {
                 mainStack.printStack();
                 inputStack.printStack();
 
+                outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"Reduce 3","3"));
+                currentState++;
 
                 break;
             case 4:
@@ -199,8 +227,29 @@ public class Run {
                 mainStack.push("T");
                 mainStack.printStack();
                 inputStack.printStack();
+
+                outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"Reduce 4","4"));
+                currentState++;
+
                 break;
             case 5:
+                if (mainStack.searchNumber(")") != 404) {
+                    if (mainStack.searchNumber("E") != 404) {
+                        if (mainStack.searchNumber("(") != 404) {
+                            int num3 = mainStack.searchNumber("(");
+                            for (int i = mainStack.stackSize() - 1; i >= num3; i--) {
+                                mainStack.pop();
+                            }
+                            mainStack.push("F");
+                        }
+                    }
+                }
+                mainStack.printStack();
+                inputStack.printStack();
+
+                outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"Reduce 5","5"));
+                currentState++;
+
                 break;
             case 6:
                 int num6 = mainStack.searchNumber("a");
@@ -211,6 +260,10 @@ public class Run {
                 mainStack.push("F");
                 mainStack.printStack();
                 inputStack.printStack();
+
+                outPuts.add(new OutPut(currentState+"",mainStack.getStackprint(),inputStack.getStackprintReverse(),"Reduce 6","6"));
+                currentState++;
+
                 break;
         }
     }
@@ -239,4 +292,34 @@ public class Run {
         } else return 0;
     }
 
+    private void acceptPrint(){
+        System.out.println("====================================================================================================");
+        System.out.print("Step");
+        System.out.print("                      ");
+        System.out.print("Stack");
+        System.out.print("                      ");
+        System.out.print("input");
+        System.out.print("                      ");
+        System.out.print("Action");
+        System.out.print("        ");
+        System.out.print("Output");
+        System.out.println();
+
+
+        for(int i =0 ; i<outPuts.size();i++){
+            System.out.print(outPuts.get(i).getState());
+            System.out.print("                   ");
+            System.out.print(outPuts.get(i).getMainStack());
+            System.out.print("                   ");
+            System.out.print(outPuts.get(i).getInputStack());
+            System.out.print("                   ");
+            System.out.print(outPuts.get(i).getConstruction());
+            System.out.print("                   ");
+            System.out.print(outPuts.get(i).getOutput());
+            System.out.println();
+        }
+
+        System.out.println("====================================================================================================");
+
+    }
 }

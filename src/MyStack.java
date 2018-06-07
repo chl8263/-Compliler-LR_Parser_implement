@@ -60,4 +60,19 @@ public class MyStack {
         System.out.println("");
 
     }
+
+    public String getStackprint(){
+        String reuslt = "";
+        for (int i = 0; i <myStack.size(); i++) {
+            reuslt += myStack.get(i)+" ";
+        }
+        return reuslt;
+    }
+    public String getStackprintReverse(){
+        String reuslt = "";
+        for (int i= myStack.size()-1; i>=0 ; i--) {
+            reuslt += myStack.get(i)+" ";
+        }
+        return reuslt;
+    }
 }
